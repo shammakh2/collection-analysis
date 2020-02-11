@@ -8,4 +8,8 @@ public class Entry {
         this.teleExtend = split[2];
 
     }
+    public String toString(){
+
+        return this.name + "\t" + this.initials + "\t" + this.teleExtend;
+    }
 }

@@ -9,12 +9,7 @@ public class main {
             FileReader file = new FileReader("./src/test_data.csv");
             BufferedReader br = new BufferedReader(file);
             String line;
-            int lineNum = 0;
-            while ((br.readLine()) != null) {
-                lineNum++;
-            }
-            ArrayDirectory init = new ArrayDirectory(lineNum);
-            System.out.println(lineNum);
+            ArrayDirectory init = new ArrayDirectory();
             file.close();
             file = new FileReader("./src/test_data.csv");
             br = new BufferedReader(file);
@@ -23,6 +18,12 @@ public class main {
                 entryObj.parseToEntry(line);
                 init.insertEntry(entryObj);
             }
+            init.deleteEntryUsingName("Amner");
+            init.deleteEntryUsingName("Amner");
+            init.deleteEntryUsingExtension("49521");
+            init.deleteEntryUsingExtension("49521");
+            init.updateExtensionUsingName("Ferro", "00000");
+
         }catch (IOException ie){
             System.out.println(ie);
         }
