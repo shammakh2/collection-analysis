@@ -29,3 +29,6 @@ public class main {
         }
     }
 }
+
+//ADD VALIDATION, CORRECTNESS TESTING AND EYE CANDY
+//Search and test premade entries
