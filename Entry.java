@@ -10,6 +10,6 @@ public class Entry {
     }
     public String toString(){
 
-        return this.name + "\t" + this.initials + "\t" + this.teleExtend;
+        return this.name + "\t" + this.initials + "\t" + this.teleExtend + "\n";
     }
 }

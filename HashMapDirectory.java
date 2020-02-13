@@ -1,38 +1,57 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-public class ArrayListDirectory {
+public class HashMapDirectory implements Directory {
 
-    private ArrayList<Entry> database = new ArrayList<Entry>();
+    private HashMap<String, Entry> nameDrivenDatabase =  new HashMap<>();
+    private HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
 
 
     public void insertEntry(Entry entry){
-        database.add(entry);
+        nameDrivenDatabase.put(entry.name, entry);
+        nameDrivenDatabase.put(entry.teleExtend, entry);
+        System.out.println(nameDrivenDatabase.size());
+        System.out.println(extensionDrivenDatabase.size());
     }
 
     public void deleteEntryUsingName(String surname){
-        boolean deletable = false;
-        if (database.removeIf(n -> (n.name.equals(surname)))) {
-            deletable = true;
+        boolean deletable = nameDrivenDatabase.containsKey(surname);
+        if (deletable) {
+            Entry edit = nameDrivenDatabase.remove(surname);
+            extensionDrivenDatabase.remove(edit.teleExtend)
             System.out.printf("Entry with name '%s' has been deleted\n", surname);
-        }
-        if (!deletable) {
+        }else{
             System.out.printf("There is no entry with the name '%s'\n", surname);
         }
-        System.out.println(database.size());
     }
 
+
     public void deleteEntryUsingExtension(String number){
-        boolean deletable = false;
-        if (database.removeIf(x -> (x.teleExtend.equals(number)))){
-            deletable = true;
-            System.out.printf("Entry with telephone extension '%s' has been deleted\n", number);
+        int deletable = 0;
+        for (Entry x: database) {
+            if (x.teleExtend.equals(number)) {
+                deletable++;
+                x.teleExtend = null;
+                System.out.printf("Entry with name '%s' has been deleted\n", number);
+            }
         }
-        if (!deletable) {
-            System.out.printf("There is no entry with the telephone extension '%s'\n", number);
+        if (deletable > 0) {
+            Entry[] update = new Entry[database.length - deletable];
+            int i = 0;
+            for (Entry x : database) {
+                if (x.teleExtend != null) {
+                    update[i] = x;
+                    i++;
+                }
+            }
+            database = update;
         }
-        System.out.println(database.size());
+        if (deletable == 0) {
+            System.out.printf("There is no entry with the name '%s'\n", number);
+        }
+        System.out.println(database.length);
     }
 
 
@@ -72,7 +91,8 @@ public class ArrayListDirectory {
 
 
     public List<Entry> toArrayList(){
-        return database;
+        ArrayList<Entry> conversion = new ArrayList<Entry>(Arrays.asList(database));
+        return conversion;
     }
 
     public void bugging(){
