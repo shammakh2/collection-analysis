@@ -1,26 +1,30 @@
+import javax.swing.*;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             FileReader file = new FileReader("./src/test_data.csv");
             BufferedReader br = new BufferedReader(file);
             String line;
             ArrayDirectory init = new ArrayDirectory();
             ArrayListDirectory initList = new ArrayListDirectory();
-            file.close();
-            file = new FileReader("./src/test_data.csv");
-            br = new BufferedReader(file);
+            HashMapDirectory initHash = new HashMapDirectory();
             while ((line = br.readLine()) != null) {
                 Entry entryObj = new Entry();
                 Entry entryListObj = new Entry();
+                Entry entryHashObj = new Entry();
                 entryObj.parseToEntry(line);
                 entryListObj.parseToEntry(line);
+                entryHashObj.parseToEntry(line);
+                Output.printer(entryObj);
                 init.insertEntry(entryObj);
                 initList.insertEntry(entryListObj);
+                initHash.insertEntry(entryHashObj);
             }
 
             init.deleteEntryUsingName("Amner");
@@ -42,9 +46,19 @@ public class main {
             initList.lookupExtension("Prott");
             System.out.println(initList.toArrayList().size());
 
+            System.out.println("HASHMAPPPPPPSPSPSPSPSPSPSAJFFSDFISJJFGSOIJDSGIJ");
+            System.out.println(initHash.toArrayList().size());
+            initHash.deleteEntryUsingName("Amner");
+            initHash.deleteEntryUsingName("Amner");
+            initHash.deleteEntryUsingExtension("49521");
+            initHash.deleteEntryUsingExtension("49521");
+            initHash.updateExtensionUsingName("Ferro", "00000");
+            initHash.lookupExtension("Mayow");
+            initHash.lookupExtension("Prott");
+            System.out.println(initHash.toArrayList().size());
 
 
-        }catch (IOException ie){
+        } catch (IOException ie) {
             System.out.println(ie);
         }
     }
@@ -52,3 +66,5 @@ public class main {
 
 //ADD VALIDATION, CORRECTNESS TESTING AND EYE CANDY
 //Search and test premade entries
+//COntinuous environment test
+//Binary Search

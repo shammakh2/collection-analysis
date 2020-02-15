@@ -9,10 +9,10 @@ public class ArrayDirectory implements Directory{
 
     public void insertEntry(Entry entry){
         Entry[] update = Arrays.copyOf(database, database.length+1);
-        System.out.println(update.length);
+        //System.out.println(update.length);
         update[update.length-1] = entry;
         database = update;
-        System.out.println(Arrays.toString(database));
+        //System.out.println(Arrays.toString(database));
     }
 
     public void deleteEntryUsingName(String surname){
@@ -104,8 +104,7 @@ public class ArrayDirectory implements Directory{
 
 
     public List<Entry> toArrayList(){
-        ArrayList<Entry> conversion = new ArrayList<Entry>(Arrays.asList(database));
-        return conversion;
+        return new ArrayList<Entry>(Arrays.asList(database));
     }
 
     public void bugging(){

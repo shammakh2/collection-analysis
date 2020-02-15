@@ -11,16 +11,15 @@ public class HashMapDirectory implements Directory {
 
     public void insertEntry(Entry entry){
         nameDrivenDatabase.put(entry.name, entry);
-        nameDrivenDatabase.put(entry.teleExtend, entry);
-        System.out.println(nameDrivenDatabase.size());
-        System.out.println(extensionDrivenDatabase.size());
+        extensionDrivenDatabase.put(entry.teleExtend, entry);
+
     }
 
     public void deleteEntryUsingName(String surname){
         boolean deletable = nameDrivenDatabase.containsKey(surname);
         if (deletable) {
             Entry edit = nameDrivenDatabase.remove(surname);
-            extensionDrivenDatabase.remove(edit.teleExtend)
+            extensionDrivenDatabase.remove(edit.teleExtend);
             System.out.printf("Entry with name '%s' has been deleted\n", surname);
         }else{
             System.out.printf("There is no entry with the name '%s'\n", surname);
@@ -29,59 +28,39 @@ public class HashMapDirectory implements Directory {
 
 
     public void deleteEntryUsingExtension(String number){
-        int deletable = 0;
-        for (Entry x: database) {
-            if (x.teleExtend.equals(number)) {
-                deletable++;
-                x.teleExtend = null;
-                System.out.printf("Entry with name '%s' has been deleted\n", number);
-            }
-        }
-        if (deletable > 0) {
-            Entry[] update = new Entry[database.length - deletable];
-            int i = 0;
-            for (Entry x : database) {
-                if (x.teleExtend != null) {
-                    update[i] = x;
-                    i++;
-                }
-            }
-            database = update;
-        }
-        if (deletable == 0) {
+        boolean deletable = extensionDrivenDatabase.containsKey(number);
+        if (deletable) {
+            Entry edit = extensionDrivenDatabase.remove(number);
+            nameDrivenDatabase.remove(edit.name);
+            System.out.printf("Entry with name '%s' has been deleted\n", number);
+        }else{
             System.out.printf("There is no entry with the name '%s'\n", number);
         }
-        System.out.println(database.length);
     }
 
 
     public void updateExtensionUsingName(String surname, String newNumber){
-        boolean changable = false;
-        for (Entry x: database) {
-            if (x.name.equals(surname)) {
-                changable = true;
-                System.out.printf("Entry with name '%s' has extension changed from '%s' to '%s'\n", surname, x.teleExtend, newNumber);
-                x.teleExtend = newNumber;
-            }
+        boolean changable = nameDrivenDatabase.containsKey(surname);
+        if (changable) {
+            Entry hashX = nameDrivenDatabase.get(surname);
+            Entry hashY = extensionDrivenDatabase.get(hashX.teleExtend);
+            hashX.teleExtend = newNumber;
+            hashY.teleExtend = newNumber;
+            System.out.printf("Entry with name '%s' has extension changed from '%s' to '%s'\n", surname, hashX.teleExtend, newNumber);
+
         }
         if (!changable) {
             System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        for (Entry x: database) {
-            if (x.name.equals(surname)){
-                System.out.println(x);
-            }
         }
     }
 
 
     public String lookupExtension(String surname){
-        boolean found = false;
-        for (Entry x: database) {
-            if (x.name.equals(surname)) {
-                found = true;
-                System.out.printf("Entry with name '%s' has extension '%s'\n", x.name, x.teleExtend);
-            }
+        boolean found = nameDrivenDatabase.containsKey(surname);
+        if (found) {
+            Entry hashX = nameDrivenDatabase.get(surname);
+
+            System.out.printf("Entry with name '%s' has extension '%s'\n", hashX.name, hashX.teleExtend);
         }
         if (!found) {
             System.out.printf("There is no entry with the name '%s'\n", surname);
@@ -91,19 +70,10 @@ public class HashMapDirectory implements Directory {
 
 
     public List<Entry> toArrayList(){
-        ArrayList<Entry> conversion = new ArrayList<Entry>(Arrays.asList(database));
-        return conversion;
+        return new ArrayList<Entry>(extensionDrivenDatabase.values());
     }
 
     public void bugging(){
-        int counter = 0;
-        for (Entry x: database){
-            if (x != null){
-                //System.out.println(x);
-                System.out.printf("%s\t%s\t%s\n", x.name,x.initials,x.teleExtend);
-                counter++;
-            }
-        }
-        System.out.println(counter);
+        System.out.println(nameDrivenDatabase.entrySet());
     }
 }
