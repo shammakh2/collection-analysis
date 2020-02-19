@@ -2,9 +2,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArrayListDirectory {
-
-    private ArrayList<Entry> database = new ArrayList<Entry>();
+public class ArrayListDirectory implements Directory{
+    public static ArrayList<Entry> database = new ArrayList<Entry>();
 
 
     public void insertEntry(Entry entry){

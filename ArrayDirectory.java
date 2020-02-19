@@ -3,8 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ArrayDirectory implements Directory{
-
-    private Entry[] database = new Entry[0];
+    public static Entry[] database = new Entry[0];
 
 
     public void insertEntry(Entry entry){
@@ -94,6 +93,7 @@ public class ArrayDirectory implements Directory{
             if (x.name.equals(surname)) {
                 found = true;
                 System.out.printf("Entry with name '%s' has extension '%s'\n", x.name, x.teleExtend);
+                return x.teleExtend;
             }
         }
         if (!found) {

@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HashMapDirectory implements Directory {
-
-    private HashMap<String, Entry> nameDrivenDatabase =  new HashMap<>();
-    private HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
+    private static HashMap<String, Entry> nameDrivenDatabase =  new HashMap<>();
+    private static HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
 
 
     public void insertEntry(Entry entry){

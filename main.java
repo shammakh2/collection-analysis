@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class main {
     public static void main(String[] args) {
         try {
-            FileReader file = new FileReader("./src/test_data.csv");
+            FileReader file = new FileReader("./src/mini.csv");
             BufferedReader br = new BufferedReader(file);
             String line;
             ArrayDirectory init = new ArrayDirectory();
@@ -21,13 +21,13 @@ public class main {
                 entryObj.parseToEntry(line);
                 entryListObj.parseToEntry(line);
                 entryHashObj.parseToEntry(line);
-                Output.printer(entryObj);
                 init.insertEntry(entryObj);
                 initList.insertEntry(entryListObj);
                 initHash.insertEntry(entryHashObj);
             }
+            Output.printer(init);
 
-            init.deleteEntryUsingName("Amner");
+            /*init.deleteEntryUsingName("Amner");
             init.deleteEntryUsingName("Amner");
             init.deleteEntryUsingExtension("49521");
             init.deleteEntryUsingExtension("49521");
@@ -55,7 +55,7 @@ public class main {
             initHash.updateExtensionUsingName("Ferro", "00000");
             initHash.lookupExtension("Mayow");
             initHash.lookupExtension("Prott");
-            System.out.println(initHash.toArrayList().size());
+            System.out.println(initHash.toArrayList().size());*/
 
 
         } catch (IOException ie) {
