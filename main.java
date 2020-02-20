@@ -56,7 +56,11 @@ public class main {
             initHash.lookupExtension("Mayow");
             initHash.lookupExtension("Prott");
             System.out.println(initHash.toArrayList().size());*/
-
+            Score.calculated(init);
+            Score.calculated(initList);
+            Score.calculated(initHash);
+            Score.pront();
+//            Output.printer(initList);
 
         } catch (IOException ie) {
             System.out.println(ie);
@@ -66,5 +70,9 @@ public class main {
 
 //ADD VALIDATION, CORRECTNESS TESTING AND EYE CANDY
 //Search and test premade entries
-//COntinuous environment test
+//Continuous environment test
 //Binary Search
+//Resize
+//Output
+//New Hashmap way
+//Duplicate Handling

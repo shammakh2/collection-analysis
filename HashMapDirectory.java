@@ -8,63 +8,56 @@ public class HashMapDirectory implements Directory {
     private static HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
 
 
-    public void insertEntry(Entry entry){
-        nameDrivenDatabase.put(entry.name, entry);
-        extensionDrivenDatabase.put(entry.teleExtend, entry);
+    public void insertEntry(Entry entre){
+        Output.size(entre);
+        if(!(nameDrivenDatabase.containsKey(entre.name)) && !(extensionDrivenDatabase.containsKey(entre.teleExtend))) {
+            nameDrivenDatabase.put(entre.name, entre);
+            extensionDrivenDatabase.put(entre.teleExtend, entre);
+        }else{
+            System.out.println("Entry already exists in HashMapDirectory.");
+        }
 
     }
 
-    public void deleteEntryUsingName(String surname){
-        boolean deletable = nameDrivenDatabase.containsKey(surname);
-        if (deletable) {
-            Entry edit = nameDrivenDatabase.remove(surname);
+    public void deleteEntryUsingName(String sur){
+            Entry edit = nameDrivenDatabase.remove(sur);
+            if (edit == null) {
+                System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", sur);
+                return;
+            }
             extensionDrivenDatabase.remove(edit.teleExtend);
-            System.out.printf("Entry with name '%s' has been deleted\n", surname);
-        }else{
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
     }
 
 
-    public void deleteEntryUsingExtension(String number){
-        boolean deletable = extensionDrivenDatabase.containsKey(number);
-        if (deletable) {
-            Entry edit = extensionDrivenDatabase.remove(number);
+    public void deleteEntryUsingExtension(String yolk){
+            Entry edit = extensionDrivenDatabase.remove(yolk);
+            if (edit == null) {
+                System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", yolk);
+                return;
+            }
             nameDrivenDatabase.remove(edit.name);
-            System.out.printf("Entry with name '%s' has been deleted\n", number);
-        }else{
-            System.out.printf("There is no entry with the name '%s'\n", number);
-        }
     }
 
 
-    public void updateExtensionUsingName(String surname, String newNumber){
-        boolean changable = nameDrivenDatabase.containsKey(surname);
-        if (changable) {
-            Entry hashX = nameDrivenDatabase.get(surname);
-            Entry hashY = extensionDrivenDatabase.get(hashX.teleExtend);
-            hashX.teleExtend = newNumber;
-            hashY.teleExtend = newNumber;
-            System.out.printf("Entry with name '%s' has extension changed from '%s' to '%s'\n", surname, hashX.teleExtend, newNumber);
-
-        }
-        if (!changable) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
+    public void updateExtensionUsingName(String surname, String gatcha){
+            Entry hashX = nameDrivenDatabase.remove(surname);
+            if (hashX == null) {
+                System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", surname);
+                return;
+            }
+            extensionDrivenDatabase.remove(hashX.teleExtend);
+            hashX.teleExtend = gatcha;
+            nameDrivenDatabase.put(hashX.name, hashX);
+            extensionDrivenDatabase.put(hashX.teleExtend, hashX);
     }
 
 
     public String lookupExtension(String surname){
-        boolean found = nameDrivenDatabase.containsKey(surname);
-        if (found) {
             Entry hashX = nameDrivenDatabase.get(surname);
-
-            System.out.printf("Entry with name '%s' has extension '%s'\n", hashX.name, hashX.teleExtend);
-        }
-        if (!found) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        return "";
+            if (hashX != null) {
+                return hashX.teleExtend;
+            }
+            return null;
     }
 
 

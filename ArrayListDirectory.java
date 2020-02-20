@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ArrayListDirectory implements Directory{
@@ -7,66 +6,50 @@ public class ArrayListDirectory implements Directory{
 
 
     public void insertEntry(Entry entry){
+        for (Entry x: database){
+            if (x.name.equals(entry.name) || x.teleExtend.equals(entry.teleExtend)){
+                System.out.println("Entry already exists in ArrayListDirectory");
+                return;
+            }
+        }
+        Output.size(entry);
         database.add(entry);
     }
 
-    public void deleteEntryUsingName(String surname){
-        boolean deletable = false;
-        if (database.removeIf(n -> (n.name.equals(surname)))) {
-            deletable = true;
-            System.out.printf("Entry with name '%s' has been deleted\n", surname);
+    public void deleteEntryUsingName(String forget){
+        if (database.removeIf(n -> (n.name.equals(forget)))) {
+            return;
         }
-        if (!deletable) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        System.out.println(database.size());
+            System.out.printf("There is no entry with the name '%s' in ArrayListDirectory\n", forget);
     }
 
-    public void deleteEntryUsingExtension(String number){
-        boolean deletable = false;
-        if (database.removeIf(x -> (x.teleExtend.equals(number)))){
-            deletable = true;
-            System.out.printf("Entry with telephone extension '%s' has been deleted\n", number);
+    public void deleteEntryUsingExtension(String unique){
+        if (database.removeIf(x -> (x.teleExtend.equals(unique)))){
+            return;
         }
-        if (!deletable) {
-            System.out.printf("There is no entry with the telephone extension '%s'\n", number);
-        }
-        System.out.println(database.size());
+            System.out.printf("There is no entry with the telephone extension '%s' in ArrayListDirectory\n", unique);
     }
 
 
-    public void updateExtensionUsingName(String surname, String newNumber){
-        boolean changable = false;
+    public void updateExtensionUsingName(String surname, String replace){
         for (Entry x: database) {
             if (x.name.equals(surname)) {
-                changable = true;
-                System.out.printf("Entry with name '%s' has extension changed from '%s' to '%s'\n", surname, x.teleExtend, newNumber);
-                x.teleExtend = newNumber;
+                x.teleExtend = replace;
+                return;
             }
         }
-        if (!changable) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        for (Entry x: database) {
-            if (x.name.equals(surname)){
-                System.out.println(x);
-            }
-        }
+            System.out.printf("There is no entry with the name '%s' in ArrayListDirectory\n", surname);
     }
 
 
     public String lookupExtension(String surname){
-        boolean found = false;
         for (Entry x: database) {
             if (x.name.equals(surname)) {
-                found = true;
-                System.out.printf("Entry with name '%s' has extension '%s'\n", x.name, x.teleExtend);
+                return x.teleExtend;
             }
         }
-        if (!found) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        return "";
+            System.out.printf("There is no entry with the name '%s' in ArrayListDirectory\n", surname);
+        return null;
     }
 
 

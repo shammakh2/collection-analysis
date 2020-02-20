@@ -1,10 +1,7 @@
-import javax.sound.midi.Soundbank;
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.spi.AbstractResourceBundleProvider;
 
 public class Input {
     static ArrayDirectory init = new ArrayDirectory();
@@ -41,11 +38,10 @@ public class Input {
         return disPath;
     }
 
-    public static void commands(String commie){
-        //Send command through and then do shit that command tells u to do
+    public static void myDad(String cacio){
         String com;
         Entry humanact;
-        switch (commie) {
+        switch (cacio) {
             case "help":
                 System.out.println("'view' \n --- Print directory in form of a table");
                 System.out.println();
@@ -136,12 +132,34 @@ public class Input {
                 System.out.println("Type in the exact name to look up the extension");
                 com = path.next();
                 if (all) {
-                    init.lookupExtension(com);
-                    initList.lookupExtension(com);
-                    initHash.lookupExtension(com);
+                    String l1 = init.lookupExtension(com);
+                    String l2 = initList.lookupExtension(com);
+                    String l3 = initHash.lookupExtension(com);
+                    if (l1 == null){
+                        System.out.printf("There is no entry with the name '%s' in ArrayDirectory\n", com);
+
+                    }else{
+                        System.out.printf("Entry with name '%s' has extension '%s' in ArrayDirectory\n", com, l1);
+                    }
+                    if (l2 == null){
+                        System.out.printf("There is no entry with the name '%s' in ArrayListDirectory\n", com);
+                    }else{
+                        System.out.printf("Entry with name '%s' has extension '%s' in ArrayListDirectory\n", com, l2);
+                    }
+                    if (l3 == null){
+                        System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", com);
+                    }else{
+                        System.out.printf("Entry with name '%s' has extension '%s' in HashMapDirectory\n", com, l3);
+                    }
                     all = false;
                 } else {
-                    act.lookupExtension(com);
+                    String l = act.lookupExtension(com);
+                    if ( l == null){
+                        System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", com);
+                    }else{
+                        System.out.printf("Entry with name '%s' has extension '%s' in HashMapDirectory\n", com, l);
+
+                    }
                 }
                 break;
 
@@ -185,7 +203,7 @@ public class Input {
             }
             while(true) {
                 System.out.println("Enter a command or type in 'help' to get a list of commands.");
-                commands(path.next());
+                myDad(path.next());
             }
 //            Entry tester = initList.database.get(0);
 //            if (init.database[0] == tester){

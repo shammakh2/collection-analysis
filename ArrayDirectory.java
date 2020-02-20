@@ -6,21 +6,25 @@ public class ArrayDirectory implements Directory{
     public static Entry[] database = new Entry[0];
 
 
-    public void insertEntry(Entry entry){
+    public void insertEntry(Entry ent){
+        for (Entry x: database){
+            if (x.name.equals(ent.name) || x.teleExtend.equals(ent.teleExtend)){
+                System.out.println("Entry already exists in ArrayDirectory");
+                return;
+            }
+        }
+        Output.size(ent);
         Entry[] update = Arrays.copyOf(database, database.length+1);
-        //System.out.println(update.length);
-        update[update.length-1] = entry;
+        update[update.length-1] = ent;
         database = update;
-        //System.out.println(Arrays.toString(database));
     }
 
-    public void deleteEntryUsingName(String surname){
+    public void deleteEntryUsingName(String namae){
         int deletable = 0;
         for (Entry x: database) {
-            if (x.name.equals(surname)) {
+            if (x.name.equals(namae)) {
                 deletable++;
                 x.name = null;
-                System.out.printf("Entry with name '%s' has been deleted\n", surname);
             }
         }
         if (deletable > 0) {
@@ -35,18 +39,17 @@ public class ArrayDirectory implements Directory{
             database = update;
         }
         if (deletable == 0) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
+            System.out.printf("There is no entry with the name '%s' in ArrayDirectory\n", namae);
         }
     }
 
 
-    public void deleteEntryUsingExtension(String number){
+    public void deleteEntryUsingExtension(String numre) {
         int deletable = 0;
-        for (Entry x: database) {
-            if (x.teleExtend.equals(number)) {
+        for (Entry x : database) {
+            if (x.teleExtend.equals(numre)) {
                 deletable++;
                 x.teleExtend = null;
-                System.out.printf("Entry with name '%s' has been deleted\n", number);
             }
         }
         if (deletable > 0) {
@@ -59,46 +62,30 @@ public class ArrayDirectory implements Directory{
                 }
             }
             database = update;
+        } else {
+            System.out.printf("There is no entry with the name '%s' in ArrayDirectory\n", numre);
         }
-        if (deletable == 0) {
-            System.out.printf("There is no entry with the name '%s'\n", number);
-        }
-        System.out.println(database.length);
     }
 
 
-    public void updateExtensionUsingName(String surname, String newNumber){
-        boolean changable = false;
+    public void updateExtensionUsingName(String surname, String newmre){
         for (Entry x: database) {
             if (x.name.equals(surname)) {
-                changable = true;
-                System.out.printf("Entry with name '%s' has extension changed from '%s' to '%s'\n", surname, x.teleExtend, newNumber);
-                x.teleExtend = newNumber;
+                x.teleExtend = newmre;
+                return;
             }
         }
-        if (!changable) {
             System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
-        for (Entry x: database) {
-            if (x.name.equals(surname)){
-                System.out.println(x);
-            }
-        }
     }
 
 
     public String lookupExtension(String surname){
-        boolean found = false;
         for (Entry x: database) {
             if (x.name.equals(surname)) {
-                found = true;
-                System.out.printf("Entry with name '%s' has extension '%s'\n", x.name, x.teleExtend);
                 return x.teleExtend;
             }
         }
-        if (!found) {
-            System.out.printf("There is no entry with the name '%s'\n", surname);
-        }
+        System.out.printf("There is no entry with the name '%s'\n", surname);
         return "";
     }
 
