@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Input {
@@ -33,9 +35,27 @@ public class Input {
     }
 
     public static String loadFile(){
-        System.out.println("Enter the path of the csv file that you want to load.");
-        String disPath = path.next();
-        return disPath;
+        String disPath;
+        while (true) {
+            System.out.println("Enter the path of the csv file that you want to load.");
+            disPath = path.next();
+            File test = new File(disPath);
+            if (!test.exists()) {
+                System.out.println("File not found, Do you wish to start with an empty directory? Y/N for yes/no");
+                String bool = path.next();
+                if (bool.equalsIgnoreCase("Y")) {
+                    return null;
+                } else if (bool.equalsIgnoreCase("N")) {
+                    System.out.println("Do you want to start with default test records in directories? Y/N for yes/no");
+                    bool = path.next();
+                    if (bool.equalsIgnoreCase("Y")) {
+                        disPath = "src/test_data.csv";
+                        return disPath;
+                    }
+                }
+            }
+        }
+        //return disPath;
     }
 
     public static void myDad(String cacio){
@@ -55,18 +75,31 @@ public class Input {
                 System.out.println();
                 System.out.println("'lookupByName' \n --- Lookup extension by name");
                 System.out.println();
+                System.out.println("'test' \n --- Do a performance analysis of all 3 directories and give an output. Then gives an option to save the data");
+                System.out.println();
 
                 break;
 
             case "insert":
                 gitMahDir();
-                System.out.println("Type in the entry you want to insert and separate the elements using comas \n Eg: surname,Initials,00000");
-                com = path.next();
+                while (true) {
+                    path.reset();
+                    System.out.println("Type in the entry you want to insert and separate the elements using commas \n Eg: surname,Initials,00000");
+                    com = path.nextLine();
+                    if(com.split(",").length == 3) {
+                        if (com.split(",")[2].replaceAll("[^\\d]", "").length() == 5) {
+                            break;
+                        }
+                    }
+                    System.out.println("Make sure extensions are 5 digits long and the data is in the right format");
+                }
                 if (all) {
                     humanact = new Entry();
                     Entry humanact2 = new Entry();
                     Entry humanact3 = new Entry();
                     humanact.parseToEntry(com);
+                    humanact2.parseToEntry(com);
+                    humanact3.parseToEntry(com);
                     init.insertEntry(humanact);
                     initList.insertEntry(humanact2);
                     initHash.insertEntry(humanact3);
@@ -179,27 +212,44 @@ public class Input {
                     Output.printer(act);
                 }
                 break;
+            case "test":
+                System.out.println("Please wait while tests are being performed. This may take a moment");
+                Score.calculated(init);
+                Score.calculated(initList);
+                Score.calculated(initHash);
+                Score.pront();
 
-
+                System.out.println("Do you want to save the performance analysis report on your computer? Y/N for yes/no");
+                if (path.next().equalsIgnoreCase("y")){
+                    String write;
+                    System.out.println("Please enter a location to output file");
+                    write = path.next();
+                    Output.outputFile(write);
+            }
 
         }
     }
 
-    public static void main(String[] args){
+    public static void lesGO(){
         try {
-            FileReader file = new FileReader(loadFile());
-            BufferedReader br = new BufferedReader(file);
-            String line;
-            while ((line = br.readLine()) != null) {
-                Entry entryObj = new Entry();
-                Entry entryListObj = new Entry();
-                Entry entryHashObj = new Entry();
-                entryObj.parseToEntry(line);
-                entryListObj.parseToEntry(line);
-                entryHashObj.parseToEntry(line);
-                init.insertEntry(entryObj);
-                initList.insertEntry(entryListObj);
-                initHash.insertEntry(entryHashObj);
+            String data = loadFile();
+            if (data != null) {
+                FileReader file = new FileReader(data);
+                BufferedReader br = new BufferedReader(file);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.split(",").length == 3) {
+                        Entry entryObj = new Entry();
+                        Entry entryListObj = new Entry();
+                        Entry entryHashObj = new Entry();
+                        entryObj.parseToEntry(line);
+                        entryListObj.parseToEntry(line);
+                        entryHashObj.parseToEntry(line);
+                        init.insertEntry(entryObj);
+                        initList.insertEntry(entryListObj);
+                        initHash.insertEntry(entryHashObj);
+                    }
+                }
             }
             while(true) {
                 System.out.println("Enter a command or type in 'help' to get a list of commands.");

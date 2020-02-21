@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.List;
 
 public class Output {
@@ -32,5 +35,19 @@ public class Output {
             System.out.format("| %" +surSizo+ "s | %"+initSizo+"s | %10s |\n", entry.name, entry.initials, entry.teleExtend);
         }
         System.out.format("+%" + (2+surSizo) + "s+%"+ (2+initSizo) +"s+%12s+\n", header(surSizo+2), header(initSizo+2), header(12));
+    }
+
+    public static void outputFile(String paco){
+        PrintStream main = System.out;
+        try {
+            PrintStream file = new PrintStream(new File(paco));
+            System.setOut(file);
+            Score.pront();
+            file.flush();
+            file.close();
+            System.setOut(main);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

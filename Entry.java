@@ -4,8 +4,8 @@ public class Entry {
     public void  parseToEntry(String line){
         String[] split = line.split(",");
         this.name = split[0];
-        this.initials = split[1];
-        this.teleExtend = split[2];
+        this.initials = split[1].toUpperCase();
+        this.teleExtend = split[2].replaceAll("[^\\d]", "");
 
     }
 //    public String toString(){
