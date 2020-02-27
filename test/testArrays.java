@@ -44,5 +44,15 @@ public class testArrays {
         testDeleteByName();
         testDeleteByExtension();
         testUpdateAndLookup();
+
+        testArrayList.testInsert();
+        testArrayList.testDeleteByName();
+        testArrayList.testDeleteByExtension();
+        testArrayList.testUpdateAndLookup();
+
+        testHashMaps.testInsert();
+        testHashMaps.testDeleteByName();
+        testHashMaps.testDeleteByExtension();
+        testHashMaps.testUpdateAndLookup();
     }
 }

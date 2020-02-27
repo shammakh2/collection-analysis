@@ -109,7 +109,7 @@ public class Input {
                         System.out.println("Do you want to start with default test records in directories? Y/N for yes/no");
                         bool = path.next();
                         if (bool.equalsIgnoreCase("Y")) {
-                            disPath = "src/test_data.csv";
+                            disPath = (Input.class.getResource("")+"test_data.csv").replaceAll("file:","");
                             return disPath;
                         }
                     }
