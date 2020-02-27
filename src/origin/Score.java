@@ -189,13 +189,13 @@ public class Score {
     }
     public static void dirSet(Directory d){
         switch (d.getClass().getCanonicalName()){
-            case "ArrayDirectory":
+            case "origin.ArrayDirectory":
                 dir = 0;
                 break;
-            case "ArrayListDirectory":
+            case "origin.ArrayListDirectory":
                 dir = 1;
                 break;
-            case "HashMapDirectory":
+            case "origin.HashMapDirectory":
                 dir = 2;
                 break;
 
