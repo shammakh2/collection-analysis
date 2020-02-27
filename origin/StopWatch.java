@@ -1,3 +1,5 @@
+package origin;
+
 /**
  * A stopwatch accumulates time when it is running. You can repeatedly start and
  * stop the stopwatch. You can use a stopwatch to measure the running time of a

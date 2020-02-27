@@ -1,3 +1,5 @@
+package origin;
+
 public class Entry {
     public String name, initials, teleExtend;
 
@@ -8,8 +10,8 @@ public class Entry {
         this.teleExtend = split[2].replaceAll("[^\\d]", "");
 
     }
-//    public String toString(){
-//
-//        return this.name + "\t" + this.initials + "\t" + this.teleExtend + "\n";
-//    }
+    public String toString(){
+
+        return this.name + "," + this.initials + "," + this.teleExtend + "\n";
+    }
 }

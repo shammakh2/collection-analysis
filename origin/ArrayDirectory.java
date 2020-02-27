@@ -1,9 +1,11 @@
+package origin;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ArrayDirectory implements Directory{
-    public static Entry[] database = new Entry[0];
+    public Entry[] database = new Entry[0];
 
 
     public void insertEntry(Entry ent){

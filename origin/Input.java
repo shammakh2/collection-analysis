@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.SQLOutput;
+package origin;
+
+import java.io.*;
 import java.util.Scanner;
 
 public class Input {
@@ -10,13 +8,14 @@ public class Input {
     static ArrayListDirectory initList = new ArrayListDirectory();
     static HashMapDirectory initHash = new HashMapDirectory();
     static Directory act;
-    static boolean all = false;
-    private static Scanner path = new Scanner(System.in);
+    static File saved = new File(System.getProperty("java.class.path") + "/save.cfg");
+    public static boolean all = false;
+    public static Scanner path = new Scanner(System.in);
 
-    public static String gitMahDir(){
+    public static void gitMahDir() {
         System.out.println("Type in the directory you want to use for this task \n 'a' for Array \n 'al' for arraylist \n 'h' for hashmaps \n 'all' for all directories");
         String tcase = path.next();
-        switch (tcase.toLowerCase()){
+        switch (tcase.toLowerCase()) {
             case "a":
                 act = init;
                 break;
@@ -31,34 +30,96 @@ public class Input {
                 all = true;
 
         }
-        return null;
     }
 
-    public static String loadFile(){
-        String disPath;
-        while (true) {
-            System.out.println("Enter the path of the csv file that you want to load.");
-            disPath = path.next();
-            File test = new File(disPath);
-            if (!test.exists()) {
-                System.out.println("File not found, Do you wish to start with an empty directory? Y/N for yes/no");
-                String bool = path.next();
-                if (bool.equalsIgnoreCase("Y")) {
-                    return null;
-                } else if (bool.equalsIgnoreCase("N")) {
-                    System.out.println("Do you want to start with default test records in directories? Y/N for yes/no");
-                    bool = path.next();
-                    if (bool.equalsIgnoreCase("Y")) {
-                        disPath = "src/test_data.csv";
-                        return disPath;
+    public static String saveChk() {
+        if (saved.exists()) {
+            try {
+                FileReader savedFile = new FileReader(saved);
+                BufferedReader savedBuffer = new BufferedReader(savedFile);
+                String l;
+                l = savedBuffer.readLine();
+                if (l.matches("date.*")) {
+                        return l.replaceAll("date:", "");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return "false";
+    }
+
+    public static void saveLoad() {
+        try {
+                FileReader savedFile = new FileReader(saved);
+                BufferedReader savedBuffer = new BufferedReader(savedFile);
+                String l;
+                while ((l = savedBuffer.readLine()) != null) {
+                    if (l.equals("end")) {
+                        break;
+                    }
+                    if (l.split(",").length == 3) {
+                        Entry entryObj = new Entry();
+                        entryObj.parseToEntry(l);
+                        init.insertEntry(entryObj);
                     }
                 }
-            }
+                while ((l = savedBuffer.readLine()) != null) {
+                    if (l.equals("end")) {
+                        break;
+                    }
+                    if (l.split(",").length == 3) {
+                        Entry entryListObj = new Entry();
+                        entryListObj.parseToEntry(l);
+                        initList.insertEntry(entryListObj);
+                    }
+                }
+                while ((l = savedBuffer.readLine()) != null) {
+                    if (l.split(",").length == 3) {
+                        Entry entryHashObj = new Entry();
+                        entryHashObj.parseToEntry(l);
+                        initHash.insertEntry(entryHashObj);
+                    }
+                }
+        } catch (IOException e) {
         }
-        //return disPath;
     }
 
-    public static void myDad(String cacio){
+    public static String loadFile() {
+        String chk = saveChk();
+        if (!chk.equals("false")) {
+            System.out.println("A session was saved on" + chk + ". Would you like to load that session? Y(yes)/N(no)");
+            if (path.next().equalsIgnoreCase("y")) {
+                saveLoad();
+                return null;
+            }
+        }
+            String disPath;
+            while (true) {
+                System.out.println("Enter the path of the csv file that you want to load.");
+                disPath = path.next();
+                File test = new File(disPath);
+                if (!test.exists()) {
+                    System.out.println("File not found, Do you wish to start with an empty directory? Y/N for yes/no");
+                    String bool = path.next();
+                    if (bool.equalsIgnoreCase("Y")) {
+                        return null;
+                    } else if (bool.equalsIgnoreCase("N")) {
+                        System.out.println("Do you want to start with default test records in directories? Y/N for yes/no");
+                        bool = path.next();
+                        if (bool.equalsIgnoreCase("Y")) {
+                            disPath = "src/test_data.csv";
+                            return disPath;
+                        }
+                    }
+                } else {
+                    return disPath;
+                }
+            }
+    }
+
+    public static void myDad(String cacio) throws End{
         String com;
         Entry humanact;
         switch (cacio) {
@@ -77,6 +138,14 @@ public class Input {
                 System.out.println();
                 System.out.println("'test' \n --- Do a performance analysis of all 3 directories and give an output. Then gives an option to save the data");
                 System.out.println();
+                System.out.println("'save' \n --- Save you session. You can then load it later.");
+                System.out.println();
+                System.out.println("'loadSave' \n --- Load previously saved session. (This will overwrite current session");
+                System.out.println();
+                System.out.println("'deleteSave' \n --- Delete previously saved session");
+                System.out.println();
+                System.out.println("'terminate' \n --- End the program");
+                System.out.println();
 
                 break;
 
@@ -86,7 +155,7 @@ public class Input {
                     path.reset();
                     System.out.println("Type in the entry you want to insert and separate the elements using commas \n Eg: surname,Initials,00000");
                     com = path.nextLine();
-                    if(com.split(",").length == 3) {
+                    if (com.split(",").length == 3) {
                         if (com.split(",")[2].replaceAll("[^\\d]", "").length() == 5) {
                             break;
                         }
@@ -109,10 +178,6 @@ public class Input {
                     humanact.parseToEntry(com);
                     act.insertEntry(humanact);
                 }
-                break;
-
-            case "del":
-
                 break;
 
             case "delByName":
@@ -156,7 +221,8 @@ public class Input {
                     initHash.updateExtensionUsingName(com, update);
                     all = false;
                 } else {
-                    act.updateExtensionUsingName(com, update);;
+                    act.updateExtensionUsingName(com, update);
+                    ;
                 }
                 break;
 
@@ -168,28 +234,28 @@ public class Input {
                     String l1 = init.lookupExtension(com);
                     String l2 = initList.lookupExtension(com);
                     String l3 = initHash.lookupExtension(com);
-                    if (l1 == null){
+                    if (l1 == null) {
                         System.out.printf("There is no entry with the name '%s' in ArrayDirectory\n", com);
 
-                    }else{
+                    } else {
                         System.out.printf("Entry with name '%s' has extension '%s' in ArrayDirectory\n", com, l1);
                     }
-                    if (l2 == null){
+                    if (l2 == null) {
                         System.out.printf("There is no entry with the name '%s' in ArrayListDirectory\n", com);
-                    }else{
+                    } else {
                         System.out.printf("Entry with name '%s' has extension '%s' in ArrayListDirectory\n", com, l2);
                     }
-                    if (l3 == null){
+                    if (l3 == null) {
                         System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", com);
-                    }else{
+                    } else {
                         System.out.printf("Entry with name '%s' has extension '%s' in HashMapDirectory\n", com, l3);
                     }
                     all = false;
                 } else {
                     String l = act.lookupExtension(com);
-                    if ( l == null){
+                    if (l == null) {
                         System.out.printf("There is no entry with the name '%s' in HashMapDirectory\n", com);
-                    }else{
+                    } else {
                         System.out.printf("Entry with name '%s' has extension '%s' in HashMapDirectory\n", com, l);
 
                     }
@@ -220,17 +286,52 @@ public class Input {
                 Score.pront();
 
                 System.out.println("Do you want to save the performance analysis report on your computer? Y/N for yes/no");
-                if (path.next().equalsIgnoreCase("y")){
+                if (path.next().equalsIgnoreCase("y")) {
                     String write;
                     System.out.println("Please enter a location to output file");
                     write = path.next();
-                    Output.outputFile(write);
-            }
+                    Output.outputTestFile(write);
+                }
+                break;
+            case "save":
+                Output.saveData(new Directory[]{init, initList, initHash});
+                break;
+            case "loadSave":
+                String chk = saveChk();
+                if (!chk.equals("false")) {
+                    System.out.println("Loading in previous save will cause you to lose your current data. Are you sure you want to continue? Y(for Yes)/N(for No)");
+                    if (path.next().equalsIgnoreCase("y")) {
+                        init = new ArrayDirectory();
+                        initList = new ArrayListDirectory();
+                        initHash = new HashMapDirectory();
+                        saveLoad();
+                    }
+                }else{
+                    System.out.println("There is no save available.");
+
+                }
+                break;
+            case "deleteSave":
+                    if (saved.exists()) {
+                        System.out.println("Are you sure you want to delete the save? Y(for Yes)/N(for No)");
+                        if (path.next().equalsIgnoreCase("y")) {
+                            saved.delete();
+                        }
+                    } else {
+                        System.out.println("No save currently exists");
+                    }
+                break;
+            case "terminate":
+                System.out.println("Do you want to save before terminating? Y(for Yes)/N(for No)");
+                if (path.next().equalsIgnoreCase("y")) {
+                    Output.saveData(new Directory[]{init, initList, initHash});
+                }
+                throw new End();
 
         }
     }
 
-    public static void lesGO(){
+    public static void lesGO() {
         try {
             String data = loadFile();
             if (data != null) {
@@ -251,19 +352,23 @@ public class Input {
                     }
                 }
             }
+            try {
+
             while(true) {
                 System.out.println("Enter a command or type in 'help' to get a list of commands.");
                 myDad(path.next());
             }
-//            Entry tester = initList.database.get(0);
-//            if (init.database[0] == tester){
-//                init.database[0] = null;
-//                System.out.println(tester.name);
-//                System.out.println(init.database[0]);
-//            }
-        }catch(IOException ioe){
+            }catch(End e){
+
+                }
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
+    }
+}
+
+class End extends Exception{
+    public End(){
     }
 }

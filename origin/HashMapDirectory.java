@@ -1,11 +1,12 @@
+package origin;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class HashMapDirectory implements Directory {
-    private static HashMap<String, Entry> nameDrivenDatabase =  new HashMap<>();
-    private static HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
+    private HashMap<String, Entry> nameDrivenDatabase =  new HashMap<>();
+    private HashMap<String, Entry> extensionDrivenDatabase =  new HashMap<>();
 
 
     public void insertEntry(Entry entre){

@@ -1,7 +1,8 @@
+package origin;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.invoke.SwitchPoint;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;

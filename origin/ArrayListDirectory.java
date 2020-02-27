@@ -1,8 +1,10 @@
+package origin;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayListDirectory implements Directory{
-    public static ArrayList<Entry> database = new ArrayList<Entry>();
+    public ArrayList<Entry> database = new ArrayList<Entry>();
 
 
     public void insertEntry(Entry entry){
